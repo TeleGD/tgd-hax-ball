@@ -20,7 +20,7 @@ public class Flash extends Bonus {
 		this.timer = 7*1000;
 
 		try {
-			this.sound = new Sound("res/sounds/haxBall/flash.ogg");
+			this.sound = new Sound("res/sounds/flash.ogg");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +45,7 @@ public class Flash extends Bonus {
 
 	public void activate(Player p, Ball b) {
 		activated = true;
-		sound.play(1, (float) 0.4);
+		sound.play(1, .4f);
 	}
 
 }

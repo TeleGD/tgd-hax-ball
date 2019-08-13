@@ -21,7 +21,7 @@ public class Deflate extends Bonus {
 		ball = null;
 		timer = 12*1000;
 		try {
-			this.sound = new Sound("res/sounds/haxBall/deflate.ogg");
+			this.sound = new Sound("res/sounds/deflate.ogg");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

@@ -14,7 +14,7 @@ public class ScoreInterface {
 
 	{
 		try {
-			scoreball = new Image("images/haxball/score/ball.png");
+			scoreball = new Image("images/score/ball.png");
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

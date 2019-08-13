@@ -24,7 +24,7 @@ public class Pillars extends Bonus {
 		pillars = new ArrayList<Player>();
 		this.timer = 20*1000;
 		try {
-			this.sound = new Sound("res/sounds/haxBall/pillar.ogg");
+			this.sound = new Sound("res/sounds/pillar.ogg");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -47,7 +47,7 @@ public class Pillars extends Bonus {
 
 	public void activate(Player p, Ball b) {
 		activated = true;
-		sound.play(1, (float) 0.4);
+		sound.play(1, .4f);
 
 		int w = field.getWidth();
 		int h = field.getHeight();

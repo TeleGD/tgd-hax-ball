@@ -21,7 +21,7 @@ public class Bip extends Bonus {
 		this.timer = 12*1000;
 
 		try {
-			this.sound = new Sound("res/sounds/haxBall/bip.ogg");
+			this.sound = new Sound("res/sounds/bip.ogg");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -36,7 +36,7 @@ public class Bip extends Bonus {
 
 			if (timer%500<=16 && timer!=0 ){
 				p.resetColor();
-				sound.play(1, (float) 0.4);
+				sound.play(1, .4f);
 
 			} else if (timer>0){
 				p.setColor(new Color(0,0,0,0));
@@ -54,6 +54,6 @@ public class Bip extends Bonus {
 	public void activate(Player p, Ball b) {
 		activated = true;
 		this.p=p;
-		sound.play(1, (float) 0.4);
+		sound.play(1, .4f);
 	}
 }

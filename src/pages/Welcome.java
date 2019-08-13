@@ -1,23 +1,19 @@
 package pages;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.EmptyTransition;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+
+import app.AppLoader;
 import app.AppPage;
-import transitions.VerticalTransition;
 
 public class Welcome extends AppPage {
 
 	private Image logo;
-	private Image background;
-	private Image transition;
-	public static Music music;
 
 	private boolean logoVisibility;
 
@@ -34,42 +30,31 @@ public class Welcome extends AppPage {
 	private int logoNaturalWidth;
 	private int logoNaturalHeight;
 
-	static {
-		try {
-			music = new Music("res/musics/HalloweenTheme.ogg");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public Welcome (int ID) {
 		super (ID);
 	}
 
 	@Override
 	public void init (GameContainer container, StateBasedGame game) {
-		super.initSize (container, game, container.getWidth()/3, container.getHeight()*7/8);
+		super.initSize (container, game, 600, 400);
 		super.init (container, game);
+
+		this.hintBoxX = this.contentX;
+		this.hintBoxY = this.contentY;
 
 		this.logoBoxX = this.contentX;
 		this.logoBoxY = this.hintBoxY + this.hintBoxHeight + AppPage.gap;
 		this.logoBoxWidth = this.contentWidth;
 		this.logoBoxHeight = this.contentY + this.contentHeight - this.logoBoxY;
 
-		this.logoVisibility = false;
+		this.logoVisibility = true;
 
 		this.titleVisibility = false;
 		this.subtitleVisibility = false;
 		this.hintBlink = true;
 
 		this.setHint ("PRESS [START]");
-		try {
-			this.background = new Image("images/welcome.png");
-			this.transition = new Image("images/soulsTransition.png");
-			this.setLogo (new Image ("images/logo.png"));
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		this.setLogo (AppLoader.loadPicture ("/images/logo.png"));
 	}
 
 	@Override
@@ -79,24 +64,12 @@ public class Welcome extends AppPage {
 		if (input.isKeyDown (Input.KEY_ESCAPE)) {
 			container.exit ();
 		} else if (input.isKeyDown (Input.KEY_ENTER)) {
-			game.enterState (1, new VerticalTransition (Color.black, transition), new EmptyTransition ());
+			game.enterState (1, new FadeOutTransition (), new FadeInTransition ());
 		}
-	}
-
-	@Override
-	public void enter (GameContainer container, StateBasedGame game) {
-		if (!music.playing()) {
-			music.loop(1, (float) 0.4);
-		}
-	}
-
-	@Override
-	public void leave (GameContainer container, StateBasedGame game) {
 	}
 
 	@Override
 	public void render (GameContainer container, StateBasedGame game, Graphics context) {
-		context.drawImage(background, 0, 0, container.getWidth(), container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		super.render (container, game, context);
 		this.renderLogo (container, game, context);
 	}

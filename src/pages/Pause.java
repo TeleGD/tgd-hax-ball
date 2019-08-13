@@ -1,7 +1,6 @@
 package pages;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -10,16 +9,12 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import app.AppMenu;
 import app.elements.MenuItem;
-import verticalPlateformer.pages.RulesPage;
+import haxBall.World;
 
 public class Pause extends AppMenu {
 
-	private int worldID;
-	private List<MenuItem> menu;
-
-	public Pause (int ID, int worldID) {
+	public Pause (int ID) {
 		super (ID);
-		this.worldID = worldID;
 	}
 
 	@Override
@@ -28,37 +23,20 @@ public class Pause extends AppMenu {
 		super.init (container, game);
 		this.setTitle ("Pause");
 		this.setSubtitle ("Le temps de prendre un goûter");
-		menu = new ArrayList<MenuItem>();
-		menu.add(new MenuItem("Retour") {
-			public void itemSelected () {
-				if (game.getState (Pause.this.worldID) instanceof verticalPlateformer.World ) {
-					((verticalPlateformer.World) game.getState (Pause.this.worldID)).setState (2);
-				} else {
-					((haxBall.World) game.getState (Pause.this.worldID)).setState (2);
-				}
-				game.enterState (Pause.this.worldID, new FadeOutTransition (), new FadeInTransition ());
-			}
-		});
-		if (game.getState (Pause.this.worldID) instanceof verticalPlateformer.World ) {
-			menu.add(new MenuItem ("Règles") {
+		this.setMenu (Arrays.asList (new MenuItem [] {
+			new MenuItem("Retour") {
 				public void itemSelected () {
-					((RulesPage) game.getState(8)).setNextPageID(Pause.this.getID());
-					((RulesPage) game.getState(8)).setPrevPageID(Pause.this.getID());
-					game.enterState (8, new FadeOutTransition (), new FadeInTransition ());
+					((World) game.getState (3)).setState (2);
+					game.enterState (3, new FadeOutTransition (), new FadeInTransition ());
 				}
-			});
-		}
-		menu.add(new MenuItem ("Abandon") {
-			public void itemSelected () {
-				if (game.getState (Pause.this.worldID) instanceof verticalPlateformer.World ) {
-					((verticalPlateformer.World) game.getState (Pause.this.worldID)).setState (0);
-				} else {
-					((haxBall.World) game.getState (Pause.this.worldID)).setState (0);
+			},
+			new MenuItem ("Abandon") {
+				public void itemSelected () {
+					((World) game.getState (3)).setState (0);
+					game.enterState (1, new FadeOutTransition (), new FadeInTransition ());
 				}
-				game.enterState (1, new FadeOutTransition (), new FadeInTransition ());
 			}
-		});
-		this.setMenu (menu);
+		}));
 		this.setHint ("HAVE A SNACK");
 	}
 

@@ -37,7 +37,7 @@ public class Player {
 
 		m_radius = m_fieldHeight/15;
 		spawnY = (m_fieldHeight/2) + m_fieldOriginY - (m_radius/2);
-		m_speed = (float) 0.3;
+		m_speed = .3f;
 
 		if(m_id == 0) {
 

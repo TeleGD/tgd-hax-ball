@@ -1,4 +1,4 @@
-package haxBall;
+package pages;
 
 import java.util.Arrays;
 
@@ -10,9 +10,11 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import app.AppMenu;
 import app.elements.MenuItem;
 
-public class WinPage extends AppMenu{
+import haxBall.World;
 
-	public WinPage(int ID) {
+public class Win extends AppMenu{
+
+	public Win(int ID) {
 		super(ID);
 	}
 
@@ -23,7 +25,7 @@ public class WinPage extends AppMenu{
 		this.setMenu (Arrays.asList (new MenuItem [] {
 			new MenuItem ("Quitter") {
 				public void itemSelected () {
-					((World) game.getState (4)).setState (0);
+					((World) game.getState (3)).setState (0);
 					game.enterState (1, new FadeOutTransition (), new FadeInTransition ());
 				}
 			}

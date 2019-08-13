@@ -37,7 +37,7 @@ public class Ball {
 	{
 		try
 		{
-			goalsound = new Sound("res/sounds/haxBall/Goal_Sound.ogg");
+			goalsound = new Sound("res/sounds/Goal_Sound.ogg");
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class Ball {
 
 		//si elle est en collision avec un joueur elle le suit
 		if(colliding) {
-			player.setSpeed((float) 0.3);
+			player.setSpeed(.3f);
 			vitx = player.getSpeedX()*0.97f;
 			vity = player.getSpeedY()*0.97f;
 
@@ -122,7 +122,7 @@ public class Ball {
 					if(!(colliding && p.equals(player))) {
 						colliding = true;
 						player = p;
-						player.setSpeed((float) 0.3);
+						player.setSpeed(.3f);
 						vitx = player.getSpeedX();
 						vity = player.getSpeedY();
 

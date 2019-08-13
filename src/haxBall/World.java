@@ -24,7 +24,7 @@ public class World extends BasicGameState {
 
 	{
 	try {
-		soundMusicBackground = new Music("res/sounds/haxBall/crowd.ogg");
+		soundMusicBackground = new Music("res/sounds/crowd.ogg");
 	} catch (SlickException e) {
 		e.printStackTrace();
 		}
@@ -101,7 +101,7 @@ public class World extends BasicGameState {
 	}
 
 	public void play (GameContainer container, StateBasedGame game) {
-		soundMusicBackground.loop(1,(float) 2);
+		soundMusicBackground.loop(1, 2f);
 		this.width = container.getWidth ();
 		this.height = container.getHeight ();
 		field = new Field(this.height , this.width);

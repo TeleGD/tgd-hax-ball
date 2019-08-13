@@ -22,7 +22,7 @@ public class Inflate extends Bonus {
 		timer = 12*1000;
 
 		try {
-			this.sound = new Sound("res/sounds/haxBall/inflate.ogg");
+			this.sound = new Sound("res/sounds/inflate.ogg");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -42,7 +42,7 @@ public class Inflate extends Bonus {
 
 	public void activate(Player p, Ball b) {
 		activated = true;
-		sound.play(1, (float) 0.4);
+		sound.play(1, .4f);
 
 		ball.setRad(ball.getRad()*2);
 	}
