@@ -78,7 +78,7 @@ public class World extends BasicGameState {
 		field.update(container, game, delta);
 		if (interfaceScore.isWin()) {
 			this.setState (3);
-			game.enterState (6, new FadeOutTransition (), new FadeInTransition ());
+			game.enterState (4, new FadeOutTransition (), new FadeInTransition ());
 		}
 	}
 
