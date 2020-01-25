@@ -1,17 +1,13 @@
-package haxBall;
+package games.haxBall;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
+
+import app.AppLoader;
 
 public class Ball {
 	private int posx;
@@ -31,18 +27,7 @@ public class Ball {
 	private Field field;
 	private Player player;
 	private float  speed;
-	private Sound goalsound;
-
-
-	{
-		try
-		{
-			goalsound = new Sound("res/sounds/Goal_Sound.ogg");
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	private Audio goalsound;
 
 	public Ball(int haut,int larg,int origx,int origy, Field field){
 
@@ -62,6 +47,7 @@ public class Ball {
 		this.player = null;
 		this.colliding = false;
 		this.speed = 1.0f;
+		goalsound = AppLoader.loadAudio("/sounds/haxBall/Goal_Sound.ogg");
 
 		hitbox=new Circle(posx+rad/2, posy+rad/2, rad/2);
 	}
@@ -204,7 +190,7 @@ public class Ball {
 			if ((posy>r_origy+r_haut*1/3)&&(posy<r_origy+2*r_haut/3)) {
 				colliding = false;
 				pointsJ1+=1;
-				goalsound.play(1, 15f);
+				goalsound.playAsSoundEffect(1, 15f, false);
 				posx=r_origx+r_larg/2-rad/2;
 				posy=r_origy+r_haut/2-rad/2;
 				vitx=0;
@@ -228,7 +214,7 @@ public class Ball {
 			if ((posy>r_origy+r_haut*1/3)&&(posy<r_origy+2*r_haut/3)) {
 				colliding = false;
 				pointsJ2+=1;
-				goalsound.play(1, 15f);
+				goalsound.playAsSoundEffect(1, 15f, false);
 				posx=r_origx+r_larg/2-rad/2;
 				posy=r_origy+r_haut/2-rad/2;
 				vitx=0;

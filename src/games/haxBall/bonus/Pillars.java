@@ -1,33 +1,31 @@
-package haxBall.bonus;
+package games.haxBall.bonus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.StateBasedGame;
 
-import haxBall.Ball;
-import haxBall.Field;
-import haxBall.Player;
+import app.AppLoader;
+
+import games.haxBall.Ball;
+import games.haxBall.Field;
+import games.haxBall.Player;
 
 public class Pillars extends Bonus {
 
 	private int timer;
 	private List<Player> pillars;
-	private Sound sound;
+	private Audio sound;
 
 	public Pillars(int posX, int posY, Field field) {
 		super(posX, posY, new Color(70,70,70), field);
 
 		pillars = new ArrayList<Player>();
 		this.timer = 20*1000;
-		try {
-			this.sound = new Sound("res/sounds/pillar.ogg");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		this.sound = AppLoader.loadAudio("/sounds/haxBall/pillar.ogg");
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -47,7 +45,7 @@ public class Pillars extends Bonus {
 
 	public void activate(Player p, Ball b) {
 		activated = true;
-		sound.play(1, .4f);
+		sound.playAsSoundEffect(1, .4f, false);
 
 		int w = field.getWidth();
 		int h = field.getHeight();

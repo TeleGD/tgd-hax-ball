@@ -1,13 +1,20 @@
-package haxBall;
+package games.haxBall;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-import haxBall.bonus.*;
+import games.haxBall.bonus.Bonus;
+import games.haxBall.bonus.Bip;
+import games.haxBall.bonus.Deflate;
+import games.haxBall.bonus.Flash;
+import games.haxBall.bonus.Inflate;
+import games.haxBall.bonus.Pillars;
+import games.haxBall.bonus.Teleport;
 
 public class Field {
 	private int height;

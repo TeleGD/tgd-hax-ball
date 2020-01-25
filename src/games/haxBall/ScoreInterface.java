@@ -1,28 +1,21 @@
-package haxBall;
+package games.haxBall;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+
+import app.AppLoader;
 
 public class ScoreInterface {
 	private Ball ball;
 	private Image scoreball;
 	private boolean win;
 
-	{
-		try {
-			scoreball = new Image("images/score/ball.png");
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public ScoreInterface(Ball b) {
 		this.ball = b;
+		this.scoreball = AppLoader.loadPicture("/images/haxBall/ball.png");
 		this.win = false;
 	}
 

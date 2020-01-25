@@ -1,4 +1,4 @@
-package haxBall;
+package games.haxBall;
 
 import java.util.ArrayList;
 import java.util.List;

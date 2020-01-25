@@ -1,19 +1,20 @@
-package haxBall.bonus;
+package games.haxBall.bonus;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.StateBasedGame;
 
-import haxBall.Ball;
-import haxBall.Field;
-import haxBall.Player;
+import app.AppLoader;
+
+import games.haxBall.Ball;
+import games.haxBall.Field;
+import games.haxBall.Player;
 
 public class Inflate extends Bonus {
 	private Ball ball;
 	private int timer;
-	private Sound sound;
+	private Audio sound;
 
 	public Inflate(int posX, int posY, Field field, Ball ball) {
 		super(posX, posY, new Color(255,0,255), field);
@@ -21,11 +22,7 @@ public class Inflate extends Bonus {
 		this.ball = ball;
 		timer = 12*1000;
 
-		try {
-			this.sound = new Sound("res/sounds/inflate.ogg");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		this.sound = AppLoader.loadAudio("/sounds/haxBall/inflate.ogg");
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -42,7 +39,7 @@ public class Inflate extends Bonus {
 
 	public void activate(Player p, Ball b) {
 		activated = true;
-		sound.play(1, .4f);
+		sound.playAsSoundEffect(1, .4f, false);
 
 		ball.setRad(ball.getRad()*2);
 	}
