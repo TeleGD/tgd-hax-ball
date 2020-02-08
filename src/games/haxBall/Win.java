@@ -1,4 +1,4 @@
-package pages;
+package games.haxBall;
 
 import java.util.Arrays;
 

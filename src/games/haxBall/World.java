@@ -1,5 +1,7 @@
 package games.haxBall;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -9,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import app.AppFont;
 import app.AppLoader;
 
 public class World extends BasicGameState {
@@ -17,9 +20,13 @@ public class World extends BasicGameState {
 	private int state;
 
 	private Field field;
+
 	private int width;
 	private int height;
-	private ScoreInterface interfaceScore;
+
+	private Font font;
+	private int scorePlayer1;
+	private int scorePlayer2;
 
 	private Audio soundMusicBackground;
 	private float soundMusicBackgroundPos;
@@ -38,6 +45,7 @@ public class World extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game) {
 		/* Méthode exécutée une unique fois au chargement du programme */
 		soundMusicBackground = AppLoader.loadAudio("/musics/haxBall/crowd.ogg");
+		font = AppLoader.loadFont("/fonts/vt323.ttf", AppFont.BOLD, 60);
 	}
 
 	@Override
@@ -70,7 +78,7 @@ public class World extends BasicGameState {
 			game.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 		field.update(container, game, delta);
-		if (interfaceScore.isWin()) {
+		if (scorePlayer1 == 10 || scorePlayer2 == 10) {
 			this.setState(3);
 			game.enterState(3, new FadeOutTransition(), new FadeInTransition());
 		}
@@ -86,12 +94,22 @@ public class World extends BasicGameState {
 		field.keyReleased(key,c);
 	}
 
-
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		/* Méthode exécutée environ 60 fois par seconde */
+
+		//le tour du terrain
+		context.setColor(new Color(102, 111, 69));
+		context.fillRect(0, 0, getWidth(), getHeight());
+
 		field.render(container, game, context);
-		interfaceScore.render(container, game, context);
+
+		//scores
+		context.setFont(this.font);
+		context.setColor(Color.white);
+		context.drawString(Integer.toString(scorePlayer1), field.getCenterX() - 35, 10);
+		context.drawString("-", field.getCenterX() - 10, 10);
+		context.drawString(Integer.toString(scorePlayer2), field.getCenterX() + 15, 10);
 	}
 
 	public void play (GameContainer container, StateBasedGame game) {
@@ -99,8 +117,9 @@ public class World extends BasicGameState {
 		soundMusicBackground.playAsMusic(1, 2f, true);
 		this.width = container.getWidth ();
 		this.height = container.getHeight ();
-		field = new Field(this.height , this.width);
-		interfaceScore = new ScoreInterface(field.getBall());
+		field = new Field(this);
+		scorePlayer1 = 0;
+		scorePlayer2 = 0;
 	}
 
 	public void pause(GameContainer container, StateBasedGame game) {
@@ -126,6 +145,21 @@ public class World extends BasicGameState {
 
 	public int getState () {
 		return this.state;
+	}
+
+	public void addScore(int team) {
+		if(team == 0)
+			scorePlayer1++;
+		else
+			scorePlayer2++;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 }

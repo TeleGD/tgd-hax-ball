@@ -3,44 +3,41 @@ package games.haxBall;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import app.AppLoader;
+
 public class Player {
-	private int m_posX, m_posY, m_tempPosX, m_tempPosY, m_radius, m_id, m_fieldHeight, m_fieldWidth, m_fieldOriginX, m_fieldOriginY;
+	private float m_posX, m_posY, m_radius;
 	private Color m_actualColor, m_defaultColor;
 	private float m_speedX, m_speedY, m_speed;
 	private boolean up, down, right, left, updown, rightLeft;
 	private Field field;
 	private Circle m_shape;
 	private boolean shooting;
-	private int spawnX, spawnY;
+	private float spawnX, spawnY;
 	private int team;
 	private String name;
 	private int rightButton, leftButton, upButton, downButton, shootButton;
+	private Image club_logo;
 
-
-	public Player(String name, int fieldHeight, int fieldWidth, int fieldOriginX, int fieldOriginY, int id, Field field, int team) {
+	public Player(String name, Field field, int team) {
 
 		this.field = field;
 		this.name = name;
 		this.shooting = false;
 		this.team = team;
-		m_id = id;
 
-		m_fieldHeight = field.getHeight();
-		m_fieldWidth = field.getWidth();
-		m_fieldOriginX = field.getPosX();
-		m_fieldOriginY = field.getPosY();
-
-		m_radius = m_fieldHeight/15;
-		spawnY = (m_fieldHeight/2) + m_fieldOriginY - (m_radius/2);
+		m_radius = field.getHeight()/25;
+		spawnY = field.getCenterY() - m_radius;
 		m_speed = .3f;
 
-		if(m_id == 0) {
+		if(team == 0) {
 
-			spawnX = ((m_fieldWidth)/6) + m_fieldOriginX;
+			spawnX = field.getCenterX() - (field.getWidth()*0.35f) - m_radius*2;
 
 			m_defaultColor = new Color(0, 0, 255);
 			upButton = Input.KEY_Z;
@@ -48,16 +45,20 @@ public class Player {
 			leftButton = Input.KEY_Q;
 			rightButton = Input.KEY_D;
 			shootButton = Input.KEY_SPACE;
+
+			this.club_logo = AppLoader.loadPicture("/images/icon.png");
 		}
 		else {
-			spawnX = ((3*m_fieldWidth)/4) + m_fieldOriginX;
+			spawnX = field.getCenterX() + (field.getWidth()*0.35f);
 			m_defaultColor = new Color(255, 0, 0);
 
 			upButton = Input.KEY_UP;
 			downButton = Input.KEY_DOWN;
 			leftButton = Input.KEY_LEFT;
 			rightButton = Input.KEY_RIGHT;
-			shootButton = Input.KEY_NUMPAD0;
+			shootButton = Input.KEY_ENTER;
+
+			this.club_logo = AppLoader.loadPicture("/images/haxBall/tektn.png");
 		}
 
 		m_posX = spawnX;
@@ -66,112 +67,37 @@ public class Player {
 		m_shape = new Circle(m_posX+(m_radius/2), m_posY+(m_radius/2), m_radius/2);
 	}
 
+	//Pilliers //TODO: faire que les pilliers ne soient pas des joueurs lol
 	public Player(int x, int y, Field field) {
 		this.field = field;
 		name = "";
-
-		m_fieldHeight = field.getHeight();
-		m_fieldWidth = field.getWidth();
-		m_fieldOriginX = field.getPosX();
-		m_fieldOriginY = field.getPosY();
 
 		this.shooting = false;
 		this.spawnX = x;
 		this.spawnY = y;
 		this.m_posX = spawnX;
 		this.m_posY = spawnY;
-		this.m_radius = m_fieldHeight/18;
+		this.m_radius = field.getHeight()/18;
 		this.m_defaultColor = new Color(70,70,70);
 		this.m_actualColor = m_defaultColor;
 		this.m_speed = 0;
-		this.m_id = 2;
-		this.m_shape = new Circle(m_posX+(m_radius/2), m_posY+(m_radius/2), m_radius/2);
-	}
-
-	/*public Player(int fieldHeight, int fieldWidth, int fieldOriginX, int fieldOriginY, int id, Player enemy) {
-		new Player(fieldHeight, fieldWidth, fieldOriginX, fieldOriginY, id);
-		m_enemy = enemy;
-	}*/
-
-	public int getPosX() {
-		return m_posX;
-	}
-
-	public int getPosY() {
-		return m_posY;
-	}
-
-	public void resetPos() {
-		m_posX = spawnX;
-		m_posY = spawnY;
-	}
-
-	public float getSpeedX() {
-		return m_speedX;
-	}
-
-	public float getSpeedY() {
-		return m_speedY;
-	}
-
-	public void setSpeed(float speed) {
-		m_speed = speed;
-	}
-
-	public int getRadius() {
-		return m_radius;
-	}
-
-	public int getID() {
-		return m_id;
-	}
-
-	public void setColor(Color color) {
-		m_actualColor = color;
-	}
-
-	public void resetColor() {
-		m_actualColor = m_defaultColor;
-	}
-
-	public Circle getShape() {
-		return m_shape;
-	}
-
-
-
-//	public void setShape(Circle shape) {
-//		m_shape = shape;
-//	}
-
-//	public void setEnemy(Player enemy) {
-//		m_enemy = enemy;
-//	}
-
-	public int getSpawnX() {
-		return spawnX;
-	}
-
-	public void setSpawnX(int spawnX) {
-		this.spawnX = spawnX;
-	}
-
-	public int getSpawnY() {
-		return spawnY;
-	}
-
-	public void setSpawnY(int spawnY) {
-		this.spawnY = spawnY;
+		this.team = 2;
+		this.m_shape = new Circle(m_posX+m_radius, m_posY+m_radius, m_radius);
 	}
 
 	public void render (GameContainer container, StateBasedGame game, Graphics context) {
-		context.setColor(m_actualColor);
-		context.fillOval(m_posX, m_posY, m_radius, m_radius);
-		context.setColor(Color.black);
-		context.drawString(name, m_posX, m_posY+(float)1.1*(m_radius));
+		//ombre
+		context.setColor(new Color(0, 0, 0, 100));
+		context.fillOval(m_posX+3,m_posY+2,m_radius*2,m_radius*2);
 
-//		context.setColor(new Color(0,255,0));
-//		context.draw(m_shape);
+		context.setColor(m_actualColor);
+		context.fillOval(m_posX, m_posY, m_radius * 2, m_radius * 2);
+		if(team < 2) {
+			context.setColor(new Color(64, 64, 64));
+			context.fillOval(m_posX + 4, m_posY + 4, m_radius * 2 - 8, m_radius * 2 - 8);
+			context.drawImage(club_logo, m_posX + 4, m_posY + 4, m_posX + m_radius * 2 - 4, m_posY + m_radius * 2 - 4, 0, 0, club_logo.getWidth(), club_logo.getHeight());
+			context.setColor(Color.black);
+		}
 	}
 
 	public void update (GameContainer container, StateBasedGame game, int delta) {
@@ -186,7 +112,7 @@ public class Player {
 
 	private void updateShape() {
 		m_shape.setLocation(m_posX, m_posY);
-		m_shape.setRadius(m_radius/2);
+		m_shape.setRadius(m_radius);
 	}
 
 	public void keyPressed(int key, char c) {
@@ -239,19 +165,19 @@ public class Player {
 		m_speedX = 0;
 		m_speedY = 0;
 
-		if(((up && !down) || (up && down && !updown)) && (m_posY > m_fieldOriginY-m_radius)){
+		if((up && !down) || (up && down && !updown)){
 			m_speedY=-m_speed;
 		}
 
-		if(((down && !up) || (up && down && updown)) && (m_posY < (m_fieldOriginY + m_fieldHeight))) {
+		if((down && !up) || (up && down && updown)) {
 			m_speedY=m_speed;
 		}
 
-		if(((left && !right)|| (left && right && rightLeft)) && (m_posX > m_fieldOriginX-m_radius)) {
+		if((left && !right)|| (left && right && rightLeft)) {
 			m_speedX = -m_speed;
 		}
 
-		if(((!left && right)|| (left && right && !rightLeft)) && (m_posX < (m_fieldOriginX + m_fieldWidth))) {
+		if((!left && right)|| (left && right && !rightLeft)) {
 			m_speedX = m_speed;
 		}
 
@@ -260,179 +186,49 @@ public class Player {
 			m_speedY/=Math.sqrt(2);
 		}
 
-		m_tempPosX = m_posX;
-		m_tempPosY = m_posY;
-
-		m_posX += (int)(dt*m_speedX);
-		m_posY += (int)(dt*m_speedY);
+		m_posX += dt*m_speedX;
+		m_posY += dt*m_speedY;
 
 		for(Player p : field.getPlayers()) {
 			if(!p.equals(this) && collision(p)) {
-				m_posX = m_tempPosX;
-				m_posY = m_tempPosY;
-				//on regarde de quel côté est la collision
-				if(m_shape.getCenterX()<p.getShape().getCenterX()) { //si on est à gauche de l'autre joueur
-					if(m_shape.getCenterY()<p.getShape().getCenterY()) { //si on est au dessus de l'autre joueur
-						//en haut à gauche
-						if(m_speedX>0 && m_speedY<=0) { //si on va vers la droite et pas vers le bas
-							m_speedX = 0;
-							m_speedY = -m_speed;
-							m_posY += (int)(dt*m_speedY);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY>0 && m_speedX<=0) { //si on va vers le bas et pas vers la droite
-							m_speedX = -m_speed;
-							m_speedY = 0;
-							m_posX += (int)(dt*m_speedX);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY>0 && m_speedX>0) { //si on va vers le bas à droite
-							if(m_shape.getCenterX() < p.getShape().getCenterX()-p.getShape().getRadius()*Math.sqrt(2)/2) { //si on a un angle>3pi/4
-								m_speedX = -m_speed;
-								m_speedY = 0;
-								m_posX += (int)(dt*m_speedX);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-							} else { //si angle < 3pi/4
-								m_speedX = 0;
-								m_speedY = -m_speed;
-								m_posY += (int)(dt*m_speedY);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-							}
-						}
-
-					} else { //si on est en dessous de l'autre joueur
-						//en bas à gauche
-						if(m_speedX>0 && m_speedY>=0) { //si on va vers la droite et pas vers le haut
-							m_speedX = 0;
-							m_speedY = m_speed;
-							m_posY += (int)(dt*m_speedY);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY<0 && m_speedX<=0) { //si on va vers le haut et pas vers la droite
-							m_speedX = -m_speed;
-							m_speedY = 0;
-							m_posX += (int)(dt*m_speedX);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY<0 && m_speedX>0) { //si on va vers le haut à droite
-							if(m_shape.getCenterX() < p.getShape().getCenterX()-p.getShape().getRadius()*Math.sqrt(2)/2) { //si on a un angle<5pi/4
-								m_speedX = -m_speed;
-								m_speedY = 0;
-								m_posX += (int)(dt*m_speedX);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-							} else { //si angle > 5pi/4
-								m_speedX = 0;
-								m_speedY = m_speed;
-								m_posY += (int)(dt*m_speedY);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-							}
-						}
+				double powX = (getCenterX() - p.getCenterX()) * (getCenterX() - p.getCenterX());
+				double powY = (getCenterY() - p.getCenterY()) * (getCenterY() - p.getCenterY());
+				double dist = Math.sqrt(powX + powY);
+				if(dist < m_radius + p.m_radius) {
+					if(p.team < 2) {
+						p.m_posX += dt * m_speedX * 0.5;
+						p.m_posY += dt * m_speedY * 0.5;
 					}
+					placeNextToPlayer(p);
 
-				} else { //si on est à droite de l'autre joueur
-					if(m_shape.getCenterY()<p.getShape().getCenterY()) { //si on est au dessus de l'autre joueur
-						//en haut à droite
-						if(m_speedX<0 && m_speedY<=0) { //si on va vers la gauche et pas vers le bas
-							m_speedX = 0;
-							m_speedY = -m_speed;
-							m_posY += (int)(dt*m_speedY);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY>0 && m_speedX>=0) { //si on va vers le bas et pas vers la gauche
-							m_speedX = m_speed;
-							m_speedY = 0;
-							m_posX += (int)(dt*m_speedX);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY>0 && m_speedX<0) { //si on va vers le bas à gauche
-							if(m_shape.getCenterX() > p.getShape().getCenterX()+p.getShape().getRadius()*Math.sqrt(2)/2) { //si on a un angle<pi/4
-								m_speedX = m_speed;
-								m_speedY = 0;
-								m_posX += (int)(dt*m_speedX);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-							} else { //si angle > pi/4
-								m_speedX = 0;
-								m_speedY = -m_speed;
-								m_posY += (int)(dt*m_speedY);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-							}
-						}
-
-					} else { //si on est en dessous de l'autre joueur
-						//en bas à droite
-						if(m_speedX<0 && m_speedY>=0) { //si on va vers la gauche et pas vers le haut
-							m_speedX = 0;
-							m_speedY = m_speed;
-							m_posY += (int)(dt*m_speedY);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY<0 && m_speedX>=0) { //si on va vers le haut et pas vers la gauche
-							m_speedX = m_speed;
-							m_speedY = 0;
-							m_posX += (int)(dt*m_speedX);
-							placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-						} else if(m_speedY<0 && m_speedX<0) { //si on va vers le haut à gauche
-							if(m_shape.getCenterX() > p.getShape().getCenterX()+p.getShape().getRadius()*Math.sqrt(2)/2) { //si on a un angle>7pi/4
-								m_speedX = m_speed;
-								m_speedY = 0;
-								m_posX += (int)(dt*m_speedX);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-
-							} else { //si angle < 7pi/4
-								m_speedX = 0;
-								m_speedY = m_speed;
-								m_posY += (int)(dt*m_speedY);
-								placeNextToPlayer(p); //on vient se coller à l'autre joueur pour éviter de se déplacer en escalier
-							}
-						}
-					}
 				}
 			}
 		}
 
-		if(m_posY <= m_fieldOriginY-m_radius) {
-			m_posY = m_fieldOriginY-m_radius;
+		if(m_posY <= field.getPosY()-m_radius*3) {
+			m_posY = field.getPosY()-m_radius*3;
 			m_speedY = 0;
 
-		} else if((m_posY) > (m_fieldOriginY + m_fieldHeight)) {
-			m_posY = m_fieldOriginY + m_fieldHeight;
+		} else if((m_posY) > (field.getPosY() + field.getHeight()+m_radius*2)) {
+			m_posY = field.getPosY() + field.getHeight()+m_radius*2;
 			m_speedY = 0;
 		}
 
-		if (m_posX <= m_fieldOriginX-m_radius) {
-			m_posX = m_fieldOriginX-m_radius;
+		if (m_posX <= field.getPosX()-m_radius*3) {
+			m_posX = field.getPosX()-m_radius*3;
 			m_speedX = 0;
 
-		} else if ((m_posX) > (m_fieldOriginX + m_fieldWidth)) {
-			m_posX = m_fieldOriginX + m_fieldWidth;
+		} else if ((m_posX) > (field.getPosX() + field.getWidth()+m_radius*2)) {
+			m_posX = field.getPosX() + field.getWidth()+m_radius*2;
 			m_speedX = 0;
 		}
 	}
 
 	private void placeNextToPlayer(Player p) {
 		updateShape();
-		//on se place au bord du joueur
-		//si on est en +-pi/2
-		if(m_shape.getCenterX() == p.getShape().getCenterX()) {
-			int signe = 1;
-			if(m_shape.getCenterY()-p.getShape().getCenterY()<0) signe = -1;
-			m_posY = (int)(p.getShape().getCenterY() + (m_shape.getRadius() + p.getShape().getRadius() + 1)*signe - m_shape.getRadius());
-
-		} else {
-			//signe pour les x
-			int signe = 1;
-			if(m_shape.getCenterX()-p.getShape().getCenterX()<0) signe = -1;
-
-			double angle = (-signe)*Math.atan((m_shape.getCenterY() - p.getShape().getCenterY())/(m_shape.getCenterX() - p.getShape().getCenterX())); //angle en radians
-			double hyp = m_shape.getRadius() + p.getShape().getRadius() + 1;
-
-			m_posX = (int)(p.getShape().getCenterX() + Math.cos(angle)*hyp*signe - m_shape.getRadius());
-			m_posY = (int)(p.getShape().getCenterY() - hyp*Math.sin(angle) - m_shape.getRadius());
-		}
+		double angle = Math.atan2(getCenterX() - p.getCenterX(), getCenterY() - p.getCenterY());
+		m_posX = p.getCenterX() + (float)(Math.sin(angle) * (m_radius + p.m_radius)) - m_radius;
+		m_posY = p.getCenterY() + (float)(Math.cos(angle) * (m_radius + p.m_radius)) - m_radius;
 	}
 
 	public boolean isShooting() {
@@ -444,6 +240,83 @@ public class Player {
 		m_posY = y;
 		m_speedX = 0;
 		m_speedY = 0;
+	}
+
+	public float getCenterX() {
+		return m_posX + m_radius;
+	}
+
+	public float getCenterY() {
+		return m_posY + m_radius;
+	}
+
+	public float getPosX() {
+		return m_posX;
+	}
+
+	public float getPosY() {
+		return m_posY;
+	}
+
+	public int getTeam() { return team; }
+
+	public void resetPos() {
+		m_posX = spawnX;
+		m_posY = spawnY;
+	}
+
+	public float getSpeedX() {
+		return m_speedX;
+	}
+
+	public float getSpeedY() {
+		return m_speedY;
+	}
+
+	public void setSpeed(float speed) {
+		m_speed = speed;
+	}
+
+	public float getRadius() {
+		return m_radius;
+	}
+
+	public void setColor(Color color) {
+		m_actualColor = color;
+	}
+
+	public void resetColor() {
+		m_actualColor = m_defaultColor;
+	}
+
+	public Circle getShape() {
+		return m_shape;
+	}
+
+
+
+//	public void setShape(Circle shape) {
+//		m_shape = shape;
+//	}
+
+//	public void setEnemy(Player enemy) {
+//		m_enemy = enemy;
+//	}
+
+	public float getSpawnX() {
+		return spawnX;
+	}
+
+	public void setSpawnX(float spawnX) {
+		this.spawnX = spawnX;
+	}
+
+	public float getSpawnY() {
+		return spawnY;
+	}
+
+	public void setSpawnY(float spawnY) {
+		this.spawnY = spawnY;
 	}
 
 }

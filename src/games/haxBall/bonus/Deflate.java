@@ -30,7 +30,7 @@ public class Deflate extends Bonus {
 		}
 
 		if (timer <= 0) {
-			ball.setRad(ball.getRad()*2);
+			ball.setRadius(ball.getRadius()*2);
 			deleted = true;
 		}
 		super.update(container, game, delta);
@@ -40,7 +40,7 @@ public class Deflate extends Bonus {
 		activated = true;
 		sound.playAsSoundEffect(1, .4f, false);
 		ball = b;
-		ball.setRad(ball.getRad()/2);
+		ball.setRadius(ball.getRadius()/2);
 	}
 
 }

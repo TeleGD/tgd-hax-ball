@@ -15,6 +15,7 @@ public class Inflate extends Bonus {
 	private Ball ball;
 	private int timer;
 	private Audio sound;
+	private int sizeFactor = 4;
 
 	public Inflate(int posX, int posY, Field field, Ball ball) {
 		super(posX, posY, new Color(255,0,255), field);
@@ -31,7 +32,7 @@ public class Inflate extends Bonus {
 		}
 
 		if (timer <= 0) {
-			ball.setRad(ball.getRad()/2);
+			ball.setRadius(ball.getRadius()/sizeFactor);
 			deleted = true;
 		}
 		super.update(container, game, delta);
@@ -41,6 +42,6 @@ public class Inflate extends Bonus {
 		activated = true;
 		sound.playAsSoundEffect(1, .4f, false);
 
-		ball.setRad(ball.getRad()*2);
+		ball.setRadius(ball.getRadius()*sizeFactor);
 	}
 }
