@@ -52,7 +52,7 @@ public final class Main {
 				this.addState(new pages.Welcome(0));
 				this.addState(new pages.Choice(1));
 				this.addState(new pages.Pause(2));
-				this.addState(new pages.Win(3));
+				this.addState(new games.haxBall.Win(3));
 				this.addState(new games.haxBall.World(4));
 			}
 

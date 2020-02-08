@@ -19,12 +19,14 @@ public class Pillars extends Bonus {
 	private int timer;
 	private List<Player> pillars;
 	private Audio sound;
+	private int pillarCount;
 
 	public Pillars(int posX, int posY, Field field) {
 		super(posX, posY, new Color(70,70,70), field);
 
 		pillars = new ArrayList<Player>();
 		this.timer = 20*1000;
+		this.pillarCount = 12;
 		this.sound = AppLoader.loadAudio("/sounds/haxBall/pillar.ogg");
 	}
 
@@ -52,12 +54,8 @@ public class Pillars extends Bonus {
 		int x = field.getPosX();
 		int y = field.getPosY();
 
-		pillars.add(new Player((int)(Math.random()*w/6+x),(int)(Math.random()*h/2+y),field));
-		pillars.add(new Player((int)(Math.random()*w/6+x+w/6),(int)(Math.random()*h/2+y+h/2),field));
-		pillars.add(new Player((int)(Math.random()*w/6+x+w*2/6),(int)(Math.random()*h/2+y),field));
-		pillars.add(new Player((int)(Math.random()*w/6+x+w*3/6),(int)(Math.random()*h/2+y+h/2),field));
-		pillars.add(new Player((int)(Math.random()*w/6+x+w*4/6),(int)(Math.random()*h/2+y),field));
-		pillars.add(new Player((int)(Math.random()*w/6+x+w*5/6),(int)(Math.random()*h/2+y+h/2),field));
+		for(int i = 0; i < pillarCount; i++)
+			pillars.add(new Player((int)(Math.random()*w/pillarCount+x+w*i/pillarCount),(int)(Math.random()*h+y),field));
 
 		for(Player q : pillars) {
 			field.addPlayer(q);

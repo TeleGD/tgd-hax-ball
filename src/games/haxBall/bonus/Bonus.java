@@ -48,11 +48,14 @@ public abstract class Bonus {
 	}
 
 	public void render (GameContainer container, StateBasedGame game, Graphics context) {
-		context.setColor(color);
-		context.fillOval(posX, posY, diam, diam);
+		//ombre
+		context.setColor(new Color(0, 0, 0, 100));
+		context.fillOval(posX+3,posY+2,diam,diam);
 
-//		context.setColor(new Color(255,0,0));
-//		context.draw(shape);
+		float sineIntensity = 0.1f;
+		float colorOffset = ((sineIntensity/2) + (float)Math.sin(timer / 100)*sineIntensity);
+		context.setColor(new Color(color.r - colorOffset, color.g- colorOffset, color.b - colorOffset, 255));
+		context.fillOval(posX, posY, diam, diam);
 	}
 
 	public boolean isDeleted() {

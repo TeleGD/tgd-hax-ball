@@ -10,11 +10,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import app.AppLoader;
 
 public class Ball {
-	private int posx;
-	private int posy;
+	private float posx;
+	private float posy;
 	private float vitx;
 	private float vity;
-	private int rad;
+	private int radius;
 	private Color color;
 	private boolean colliding;
 	private int r_origx;
@@ -22,41 +22,38 @@ public class Ball {
 	private int r_larg;
 	private int r_haut;
 	private Circle hitbox;
-	private int pointsJ1;
-	private int pointsJ2;
 	private Field field;
+	private World world;
 	private Player player;
 	private float  speed;
 	private Audio goalsound;
 
-	public Ball(int haut,int larg,int origx,int origy, Field field){
+	public Ball(Field field, World world){
 
-		r_origx=origx;
-		r_origy=origy;
-		r_larg=larg;
-		r_haut=haut;
-		rad=haut/30;
-		posx=r_origx+r_larg/2-rad/2;
-		posy=r_origy+r_haut/2-rad/2;
-		vitx=0;
-		vity=0;
-		color=Color.white;
-		pointsJ1=0;
-		pointsJ2=0;
+		r_origx = field.getPosX();
+		r_origy = field.getPosY();
+		r_larg = field.getWidth();
+		r_haut = field.getHeight();
+		radius = field.getHeight()/60;
 		this.field = field;
+		this.world = world;
 		this.player = null;
 		this.colliding = false;
 		this.speed = 1.0f;
+		resetPos();
+		vitx=0;
+		vity=0;
+		color=Color.white;
+
 		goalsound = AppLoader.loadAudio("/sounds/haxBall/Goal_Sound.ogg");
 
-		hitbox=new Circle(posx+rad/2, posy+rad/2, rad/2);
+		hitbox=new Circle(posx+ radius, posy+ radius, radius);
 	}
-
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		//on update la position
-		int oldPosX = posx;
-		int oldPosY = posy;
+		float oldPosX = posx;
+		float oldPosY = posy;
 
 		if(!colliding) {
 			//c'est pas beau mais si on fait pas ça les arrondis sont diff en négatif et en positif du coup si la balle a une vitesse negative elle met plus longtemps à s'arrêter sur cette composante...
@@ -99,7 +96,7 @@ public class Ball {
 		for (Player p : field.getPlayers()) {
 			updateShape();
 			if(hitbox.intersects(p.getShape())) { //si on a une collision avec un nouveau joueur
-				if(p.getID()>1) {
+				if(p.getTeam()>1) {
 					collideWithPlayer(p);
 					shoot(p);
 					bordersCollision(oldPosX, oldPosY);
@@ -132,33 +129,19 @@ public class Ball {
 
 	private void updateShape() {
 		hitbox.setLocation(posx,posy);
-		hitbox.setRadius(rad/2);
+		hitbox.setRadius(radius);
 	}
 
 	private void collideWithPlayer(Player p) {
-		//on replace la balle au bord du joueur
-		//si on est en +-pi/2
-		if(hitbox.getCenterX() == p.getShape().getCenterX()) {
-			int signe = 1;
-			if(hitbox.getCenterY()-p.getShape().getCenterY()<0) signe = -1;
-			posy = (int)(p.getShape().getCenterY() + (hitbox.getRadius() + p.getShape().getRadius())*signe - hitbox.getRadius());
-
-		} else {
-			//signe pour les x
-			int signe = 1;
-			if(hitbox.getCenterX()-p.getShape().getCenterX()<0) signe = -1;
-
-			double angle = (-signe)*Math.atan((hitbox.getCenterY() - p.getShape().getCenterY())/(hitbox.getCenterX() - p.getShape().getCenterX())); //angle en radians
-			double hyp = hitbox.getRadius() + p.getShape().getRadius();
-
-			posx = (int)(p.getShape().getCenterX() + Math.rint(Math.cos(angle)*hyp*signe - hitbox.getRadius()));
-			posy = (int)(p.getShape().getCenterY() - hyp*Math.sin(angle) - hitbox.getRadius());
-		}
+		updateShape();
+		double angle = Math.atan2(hitbox.getCenterX() - p.getCenterX(), hitbox.getCenterY() - p.getCenterY());
+		posx = p.getCenterX() + (float)(Math.sin(angle) * (radius + p.getRadius())) - radius;
+		posy = p.getCenterY() + (float)(Math.cos(angle) * (radius + p.getRadius())) - radius;
 	}
 
 	private void shoot(Player p) {
 		double tmpSpeed = speed;
-		if(p.getID()>1) tmpSpeed = Math.sqrt(Math.pow(vitx, 2)+Math.pow(vity, 2));
+		if(p.getTeam()>1) tmpSpeed = Math.sqrt(Math.pow(vitx, 2)+Math.pow(vity, 2));
 
 		double angle = 0;
 		double hyp = Math.sqrt(2)*tmpSpeed;
@@ -180,19 +163,18 @@ public class Ball {
 		vitx = (float)(Math.cos(angle)*hyp*signeX);
 		vity = (float)(-hyp*Math.sin(angle));
 
-		if(p.getID()<=1) colliding = false;
+		if(p.getTeam()<=1) colliding = false;
 	}
 
-	private void bordersCollision(int oldX, int oldY) {
+	private void bordersCollision(float oldX, float oldY) {
 		//s'il y a collision sur le bord de droite
-		if (posx+rad> r_origx+r_larg){
+		if (posx+ radius > r_origx+r_larg){
 			//on regarde s'il y a un but
 			if ((posy>r_origy+r_haut*1/3)&&(posy<r_origy+2*r_haut/3)) {
 				colliding = false;
-				pointsJ1+=1;
+				world.addScore(0);
 				goalsound.playAsSoundEffect(1, 15f, false);
-				posx=r_origx+r_larg/2-rad/2;
-				posy=r_origy+r_haut/2-rad/2;
+				resetPos();
 				vitx=0;
 				vity=0;
 //				System.out.println(pointsJ1);
@@ -213,10 +195,9 @@ public class Ball {
 			//s'il y a un but
 			if ((posy>r_origy+r_haut*1/3)&&(posy<r_origy+2*r_haut/3)) {
 				colliding = false;
-				pointsJ2+=1;
+				world.addScore(1);
 				goalsound.playAsSoundEffect(1, 15f, false);
-				posx=r_origx+r_larg/2-rad/2;
-				posy=r_origy+r_haut/2-rad/2;
+				resetPos();
 				vitx=0;
 				vity=0;
 //				System.out.println(pointsJ1);
@@ -235,7 +216,7 @@ public class Ball {
 		}
 
 		//s'il y a collision avec le bord du bas ou celui du haut
-		if (posy+rad>r_origy+r_haut || posy<r_origy){
+		if (posy+ radius >r_origy+r_haut || posy<r_origy){
 			if(!colliding) vity=-vity;
 			else vity=0;
 
@@ -244,12 +225,17 @@ public class Ball {
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context){
-		context.setColor(color);
-//		if(colliding) context.setColor(new Color(255,0,0));
-		context.fillOval(posx,posy,rad,rad);
+		//ombre
+		context.setColor(new Color(0, 0, 0, 100));
+		context.fillOval(posx+3,posy+2,radius*2,radius*2);
 
-//		context.setColor(new Color(0,0,255));
-//		context.draw(hitbox);
+		//remplissage
+		context.setColor(Color.white);
+		context.fillOval(posx,posy,radius*2,radius*2);
+
+		//countour
+		context.setColor(Color.black);
+		context.drawOval(posx,posy,radius*2,radius*2);
 
 	}
 
@@ -261,23 +247,19 @@ public class Ball {
 		this.posy = posy;
 	}
 
-	public void setRad(int r) {
-		rad = r;
-		posx = (int)hitbox.getCenterX() - rad/2;
-		posy = (int)hitbox.getCenterY() - rad/2;
+	public void setRadius(int r) {
+		radius = r;
+		posx = (int)hitbox.getCenterX() - radius;
+		posy = (int)hitbox.getCenterY() - radius;
 		updateShape();
 	}
 
-	public int getRad() {
-		return rad;
+	public int getRadius() {
+		return radius;
 	}
 
-	public int getPointsJ1() {
-		return pointsJ1;
-	}
-
-
-	public int getPointsJ2() {
-		return pointsJ2;
+	public void resetPos() {
+		posx= field.getCenterX() - radius;
+		posy= field.getCenterY() - radius;
 	}
 }
