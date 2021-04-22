@@ -1,4 +1,4 @@
-package games.haxBall;
+package games.tncyBall;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -45,7 +45,7 @@ public class Ball {
 		vity=0;
 		color=Color.white;
 
-		goalsound = AppLoader.loadAudio("/sounds/haxBall/Goal_Sound.ogg");
+		goalsound = AppLoader.loadAudio("/sounds/tncyBall/Goal_Sound.ogg");
 
 		hitbox=new Circle(posx+ radius, posy+ radius, radius);
 	}

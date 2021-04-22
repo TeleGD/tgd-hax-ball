@@ -1,4 +1,4 @@
-package games.haxBall;
+package games.tncyBall;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package games.haxBall;
+package games.tncyBall;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -58,7 +58,7 @@ public class Player {
 			rightButton = Input.KEY_RIGHT;
 			shootButton = Input.KEY_ENTER;
 
-			this.club_logo = AppLoader.loadPicture("/images/haxBall/tektn.png");
+			this.club_logo = AppLoader.loadPicture("/images/tncyBall/tektn.png");
 		}
 
 		m_posX = spawnX;

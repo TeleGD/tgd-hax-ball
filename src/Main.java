@@ -14,7 +14,7 @@ import app.AppLoader;
 public final class Main {
 
 	public static final void main(String[] arguments) throws SlickException {
-		String title = "Hax Ball";
+		String title = "TNCY Ball";
 		int width = 1280;
 		int height = 720;
 		boolean fullscreen = false;
@@ -52,8 +52,8 @@ public final class Main {
 				this.addState(new pages.Welcome(0));
 				this.addState(new pages.Choice(1));
 				this.addState(new pages.Pause(2));
-				this.addState(new games.haxBall.Win(3));
-				this.addState(new games.haxBall.World(4));
+				this.addState(new games.tncyBall.Win(3));
+				this.addState(new games.tncyBall.World(4));
 			}
 
 		};
