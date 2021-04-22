@@ -168,7 +168,7 @@ public class Ball {
 
 	private void bordersCollision(float oldX, float oldY) {
 		//s'il y a collision sur le bord de droite
-		if (posx+ radius > r_origx+r_larg){
+		if (posx+ radius*2 > r_origx+r_larg){
 			//on regarde s'il y a un but
 			if ((posy>r_origy+r_haut*1/3)&&(posy<r_origy+2*r_haut/3)) {
 				colliding = false;
@@ -216,7 +216,7 @@ public class Ball {
 		}
 
 		//s'il y a collision avec le bord du bas ou celui du haut
-		if (posy+ radius >r_origy+r_haut || posy<r_origy){
+		if (posy+ radius*2 >r_origy+r_haut || posy<r_origy){
 			if(!colliding) vity=-vity;
 			else vity=0;
 

@@ -205,21 +205,21 @@ public class Player {
 			}
 		}
 
-		if(m_posY <= field.getPosY()-m_radius*3) {
-			m_posY = field.getPosY()-m_radius*3;
+		if(m_posY < field.getPosY()-m_radius*2) {
+			m_posY = field.getPosY()-m_radius*2;
 			m_speedY = 0;
 
-		} else if((m_posY) > (field.getPosY() + field.getHeight()+m_radius*2)) {
-			m_posY = field.getPosY() + field.getHeight()+m_radius*2;
+		} else if(m_posY > field.getPosY() + field.getHeight()) {
+			m_posY = field.getPosY() + field.getHeight();
 			m_speedY = 0;
 		}
 
-		if (m_posX <= field.getPosX()-m_radius*3) {
-			m_posX = field.getPosX()-m_radius*3;
+		if (m_posX < field.getPosX()-m_radius*2) {
+			m_posX = field.getPosX()-m_radius*2;
 			m_speedX = 0;
 
-		} else if ((m_posX) > (field.getPosX() + field.getWidth()+m_radius*2)) {
-			m_posX = field.getPosX() + field.getWidth()+m_radius*2;
+		} else if (m_posX > field.getPosX() + field.getWidth()) {
+			m_posX = field.getPosX() + field.getWidth();
 			m_speedX = 0;
 		}
 	}
