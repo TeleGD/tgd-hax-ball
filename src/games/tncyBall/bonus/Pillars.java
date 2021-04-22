@@ -1,4 +1,4 @@
-package games.haxBall.bonus;
+package games.tncyBall.bonus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppLoader;
 
-import games.haxBall.Ball;
-import games.haxBall.Field;
-import games.haxBall.Player;
+import games.tncyBall.Ball;
+import games.tncyBall.Field;
+import games.tncyBall.Player;
 
 public class Pillars extends Bonus {
 
@@ -27,7 +27,7 @@ public class Pillars extends Bonus {
 		pillars = new ArrayList<Player>();
 		this.timer = 20*1000;
 		this.pillarCount = 12;
-		this.sound = AppLoader.loadAudio("/sounds/haxBall/pillar.ogg");
+		this.sound = AppLoader.loadAudio("/sounds/tncyBall/pillar.ogg");
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {

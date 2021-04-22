@@ -1,4 +1,4 @@
-package games.haxBall;
+package games.tncyBall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-import games.haxBall.bonus.Bonus;
-import games.haxBall.bonus.Deflate;
-import games.haxBall.bonus.Inflate;
-import games.haxBall.bonus.Pillars;
-import games.haxBall.bonus.Teleport;
+import games.tncyBall.bonus.Bonus;
+import games.tncyBall.bonus.Deflate;
+import games.tncyBall.bonus.Inflate;
+import games.tncyBall.bonus.Pillars;
+import games.tncyBall.bonus.Teleport;
 
 public class Field {
 	private int height;
@@ -37,7 +37,7 @@ public class Field {
 		this.defaultColor = new Color(102, 148, 68);
 		this.actualColor = defaultColor;
 		this.bonusTimer = 10*1000;
-		//this.tn_logo = AppLoader.loadPicture("/images/haxBall/tn.png");
+		//this.tn_logo = AppLoader.loadPicture("/images/tncyBall/tn.png");
 
 		this.rnd = (float) Math.random();
 		//System.out.println(this.rnd);

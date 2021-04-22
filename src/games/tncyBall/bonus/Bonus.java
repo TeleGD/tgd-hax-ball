@@ -1,4 +1,4 @@
-package games.haxBall.bonus;
+package games.tncyBall.bonus;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -6,9 +6,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.state.StateBasedGame;
 
-import games.haxBall.Ball;
-import games.haxBall.Field;
-import games.haxBall.Player;
+import games.tncyBall.Ball;
+import games.tncyBall.Field;
+import games.tncyBall.Player;
 
 public abstract class Bonus {
 	private int posX, posY;

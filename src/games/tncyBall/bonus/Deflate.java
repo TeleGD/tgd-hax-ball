@@ -1,4 +1,4 @@
-package games.haxBall.bonus;
+package games.tncyBall.bonus;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -7,9 +7,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppLoader;
 
-import games.haxBall.Ball;
-import games.haxBall.Field;
-import games.haxBall.Player;
+import games.tncyBall.Ball;
+import games.tncyBall.Field;
+import games.tncyBall.Player;
 
 public class Deflate extends Bonus {
 	private Ball ball;
@@ -21,7 +21,7 @@ public class Deflate extends Bonus {
 
 		ball = null;
 		timer = 12*1000;
-		this.sound = AppLoader.loadAudio("/sounds/haxBall/deflate.ogg");
+		this.sound = AppLoader.loadAudio("/sounds/tncyBall/deflate.ogg");
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
